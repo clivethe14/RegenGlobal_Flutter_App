@@ -107,9 +107,9 @@ class AllianceDashboardPage extends StatelessWidget {
                         children: [
                           Icon(Icons.menu_book_outlined, size: 40),
                           SizedBox(height: 8),
-                          Text('Regen Global Magazine – Ad', textAlign: TextAlign.center),
+                          Text('Regen Media Kit', textAlign: TextAlign.center),
                           SizedBox(height: 4),
-                          Text('Request ad placement in our magazine',
+                          Text('Sponsorship · Advertisment · Content Submission',
                               textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
                         ],
                       ),

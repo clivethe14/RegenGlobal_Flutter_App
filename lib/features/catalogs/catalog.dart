@@ -334,35 +334,21 @@ final Map<String, ItemListConfig> listCatalog = {
       ),ListItemSpec(
         id: 'whatsApp',
         title: 'WhatsApp',
-        linkUrl: 'https://whatsapp.com/YOUR_HANDLE',
+        linkUrl: 'https://chat.whatsapp.com/BU5a765wYp4KurToTJRAEQ',
       ),ListItemSpec(
         id: 'signal',
         title: 'Signal',
-        linkUrl: 'https://signal.com/YOUR_HANDLE',
+        linkUrl: 'https://signal.group/#CjQKINxZt4H7Y4dtc-70mgM3d0FiJpBoxhEfSLO1VBZusmy6EhBsqagsMDqhZRG-F4eP7kq5',
       ),ListItemSpec(
         id: 'telegram',
         title: 'Telegram',
-        linkUrl: 'https://telegram.com/YOUR_HANDLE',
-      ),
-      ListItemSpec(
-        id: 'twitter',
-        title: 'Twitter / X',
-        linkUrl: 'https://twitter.com/YOUR_HANDLE',
-      ),
-      ListItemSpec(
-        id: 'linkedin',
-        title: 'LinkedIn',
-        linkUrl: 'https://www.linkedin.com/company/YOUR_COMPANY',
+        linkUrl: 'https://t.me/+73ilYbPKq49iZTJh',
       ),
       ListItemSpec(
         id: 'instagram',
         title: 'Facebook',
-        linkUrl: 'https://www.facebook.com/ncallianceforresilientcommunities/',
-      ),ListItemSpec(
-        id: 'discord',
-        title: 'Discord',
-        linkUrl: 'https://discord.com/YOUR_HANDLE',
-      ),
+        linkUrl: 'https://m.me/j/Abbsm8gFA5wGKkDd/',
+      )
       // Add more channels if you like
     ],
   ),
