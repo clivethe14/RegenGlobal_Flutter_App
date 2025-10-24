@@ -49,7 +49,7 @@ class AllianceDashboardPage extends StatelessWidget {
                     case 'signout':
                       await Supabase.instance.client.auth.signOut();
                       if (!context.mounted) return;
-                      context.go('/login');
+                      context.go('/free');
                       break;
                   }
                 } catch (e) {

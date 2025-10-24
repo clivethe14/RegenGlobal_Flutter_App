@@ -67,54 +67,56 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up')),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).padding.top -
-                  kToolbarHeight,
-            ),
-            child: IntrinsicHeight(
-              child: Column(
-                children: [
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 24.0),
-                      child: Image.asset(
-                        'assets/images/logo.png',
-                        height: 120,
+    return PopScope(
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Sign Up')),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).padding.top -
+                    kToolbarHeight,
+              ),
+              child: IntrinsicHeight(
+                child: Column(
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 24.0),
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          height: 120,
+                        ),
                       ),
                     ),
-                  ),
-                  TextField(controller: emailCtrl, decoration: const InputDecoration(labelText: 'Email')),
-                  const SizedBox(height: 8),
-                  TextField(controller: passCtrl, obscureText: true, decoration: const InputDecoration(labelText: 'Password')),
-                  const SizedBox(height: 16),
-                  DropdownButtonFormField<String>(
-                    value: plan,
-                    items: const [
-                      DropdownMenuItem(value: 'general', child: Text('General (for normal customers)')),
-                      DropdownMenuItem(value: 'alliance', child: Text('Alliance (for businesses)')),
-                    ],
-                    onChanged: (v) => setState(() => plan = v ?? 'general'),
-                    decoration: const InputDecoration(labelText: 'Subscription Type'),
-                  ),
-                  const SizedBox(height: 16),
-                  FilledButton(
-                    onPressed: loading ? null : _signUp,
-                    child: Text(loading ? 'Creating...' : 'Create account'),
-                  ),
-                  const SizedBox(height: 8),
-                  TextButton(
-                    onPressed: () => context.go('/login'),
-                    child: const Text('Already have an account? Login'),
-                  ),
-                  const Spacer(),
-                ],
+                    TextField(controller: emailCtrl, decoration: const InputDecoration(labelText: 'Email')),
+                    const SizedBox(height: 8),
+                    TextField(controller: passCtrl, obscureText: true, decoration: const InputDecoration(labelText: 'Password')),
+                    const SizedBox(height: 16),
+                    // DropdownButtonFormField<String>(
+                    //   value: plan,
+                    //   items: const [
+                    //     DropdownMenuItem(value: 'general', child: Text('General (for normal customers)')),
+                    //     DropdownMenuItem(value: 'alliance', child: Text('Alliance (for businesses)')),
+                    //   ],
+                    //   onChanged: (v) => setState(() => plan = v ?? 'general'),
+                    //   decoration: const InputDecoration(labelText: 'Subscription Type'),
+                    // ),
+                    const SizedBox(height: 16),
+                    FilledButton(
+                      onPressed: loading ? null : _signUp,
+                      child: Text(loading ? 'Creating...' : 'Create account'),
+                    ),
+                    const SizedBox(height: 8),
+                    TextButton(
+                      onPressed: () => context.go('/login'),
+                      child: const Text('Already have an account? Login'),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
               ),
             ),
           ),

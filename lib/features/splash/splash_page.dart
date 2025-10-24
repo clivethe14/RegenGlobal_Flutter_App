@@ -14,18 +14,20 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    // Auto-navigate after 2 seconds
-    Timer(const Duration(seconds: 2), () {
-      if (!mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Optional: keep your existing delay/animation duration
+      await Future.delayed(const Duration(milliseconds: 1200));
 
-      // Check if user is already signed in
       final session = Supabase.instance.client.auth.currentSession;
+
+      if (!mounted) return;
       if (session != null) {
-        // User is signed in, go to auth landing gate
+        // Already authenticated → go to your existing gate at '/'
+        // Your AuthLandingGate will route to Alliance/General/Paywall as before.
         context.go('/');
       } else {
-        // User is not signed in, go to login
-        context.go('/login');
+        // Not signed in → show public landing
+        context.go('/free');
       }
     });
   }

@@ -16,6 +16,8 @@ import 'features/paywall/paywall_page.dart';
 import 'features/auth/auth_landing_gate.dart';
 import 'features/splash/splash_page.dart';
 import 'features/auth/nda_page.dart';
+import 'features/dashboard/free_dashboard_page.dart';
+
 
 
 import 'dev/dev_tools.dart';
@@ -39,33 +41,36 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: '/splash',
     refreshListenable: GoRouterRefreshStream(authStream),
     redirect: (context, state) {
+      final location = state.uri.toString();
       final session = Supabase.instance.client.auth.currentSession;
-      final location = state.fullPath;
 
-      // Allow splash page to show first
-      if (location == '/splash') return null;
+      // Always allow splash and free pages (public)
+      if (location == '/splash' || location == '/free') return null;
 
-      // If not signed in, redirect to login (except for signup page)
+      // If not signed in, allow login and signup, otherwise send to login
       if (session == null) {
-        if (location == '/login' || location == '/signup') return null;
+        final isPublic =
+            location == '/splash' ||
+                location == '/free'   ||
+                location == '/signup' ||
+                location.startsWith('/link') ||
+                location.startsWith('/list/');
+
+        if (isPublic) return null;
         return '/login';
       }
 
-      // User is signed in - prevent access to auth pages
-      if (location == '/login' || location == '/signup') {
-        return '/'; // This will trigger the AuthLandingGate
-      }
-
-      // Allow paywall access for signed-in users
-      if (location == '/paywall') return null;
-
-      // Allow all other routes - let AuthLandingGate handle the logic
+      // If signed in, let your normal flow continue
       return null;
     },
     routes: [
       GoRoute(
         path: '/splash',
         builder: (context, state) => const SplashPage(),
+      ),
+      GoRoute(
+        path: '/free',
+        builder: (context, state) => const FreeDashboardPage(),
       ),
 
       GoRoute(
