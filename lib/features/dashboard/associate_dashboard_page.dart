@@ -10,8 +10,8 @@ import '../../core/form_engine/models.dart' as fe;
 import '../catalogs/catalog.dart'; // exports: dashboardLinks and your tile model
 import '../../dev/dev_tools.dart'; // currentPlan(), switchPlan(), dashboardPathForPlan()
 
-class AllianceDashboardPage extends StatelessWidget {
-  const AllianceDashboardPage({super.key});
+class AssociateDashboardPage extends StatelessWidget {
+  const AssociateDashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class AllianceDashboardPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Affiliate Dashboard'),
+        title: const Text('Associate Dashboard'),
         actions: [
           if (kDebugMode)
             PopupMenuButton<String>(

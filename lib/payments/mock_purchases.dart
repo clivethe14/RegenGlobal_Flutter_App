@@ -1,6 +1,22 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'purchase_service.dart';
 
+class MockPurchaseService implements PurchaseService {
+  @override
+  Future<bool> purchasePlan(String productId) async {
+    await Future.delayed(const Duration(milliseconds: 600));
+    return true;
+  }
+
+  @override
+  Future<bool> hasEntitlement(String entitlement) async {
+    return true; // pretend active in dev
+  }
+
+  @override
+  Future<void> restorePurchases() async {}
+}
+
 class MockPurchasesService implements PurchasesService {
   final _client = Supabase.instance.client;
 

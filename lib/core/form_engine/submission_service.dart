@@ -140,7 +140,7 @@ class SupabaseSubmissionService implements SubmissionService {
         'email': safePayload['email'],
         'phone': safePayload['phone'],
         'requirement': safePayload['requirement'],
-        'domain': safePayload['domain'],
+        'domain': safePayload['consultantType'] ?? safePayload['domain'],
       });
     }
 

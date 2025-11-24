@@ -18,5 +18,7 @@ String currentPlan() {
 /// Return the dashboard route path for the current (or provided) plan.
 String dashboardPathForPlan([String? plan]) {
   final p = (plan ?? currentPlan()).toLowerCase();
-  return (p == 'alliance') ? '/dashboard/alliance' : '/dashboard/general';
+  if (p == 'alliance') return '/dashboard/alliance';
+  if (p == 'associate') return '/dashboard/associate';
+  return '/dashboard/general';
 }

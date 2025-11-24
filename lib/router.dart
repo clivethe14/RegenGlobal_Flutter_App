@@ -7,20 +7,18 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 // Features
 import 'features/dashboard/dashboard_page.dart';
 import 'features/dashboard/alliance_dashboard_page.dart';
-import 'features/forms/dynamic_form_page.dart';
+import 'features/dashboard/associate_dashboard_page.dart';
+import 'features/forms/dynamic_form_page_wrapper.dart';
 import 'features/links/web_link_page.dart';
 import 'features/lists/item_list_page.dart';
 import 'features/auth/login_page.dart';
 import 'features/auth/signup_page.dart';
-import 'features/paywall/paywall_page.dart';
+import 'features/paywall/paywall_page_rc.dart';
 import 'features/auth/auth_landing_gate.dart';
 import 'features/splash/splash_page.dart';
 import 'features/auth/nda_page.dart';
 import 'features/dashboard/free_dashboard_page.dart';
-
-
-
-import 'dev/dev_tools.dart';
+import 'features/paywall/media_kit_page.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
   late final StreamSubscription _sub;
@@ -49,12 +47,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       // If not signed in, allow login and signup, otherwise send to login
       if (session == null) {
-        final isPublic =
-            location == '/splash' ||
-                location == '/free'   ||
-                location == '/signup' ||
-                location.startsWith('/link') ||
-                location.startsWith('/list/');
+        final isPublic = location == '/splash' ||
+            location == '/free' ||
+            location == '/signup' ||
+            location.startsWith('/link') ||
+            location.startsWith('/list/');
 
         if (isPublic) return null;
         return '/login';
@@ -72,47 +69,49 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/free',
         builder: (context, state) => const FreeDashboardPage(),
       ),
-
       GoRoute(
         path: '/',
         builder: (context, state) => const AuthLandingGate(),
       ),
-
       GoRoute(
         path: '/login',
         builder: (context, state) => const LoginPage(),
       ),
-
       GoRoute(
         path: '/signup',
         builder: (context, state) => const SignUpPage(),
       ),
-
       GoRoute(
         path: '/paywall',
         builder: (context, state) => const PaywallPage(),
       ),
-
       GoRoute(
         path: '/dashboard/general',
-        builder: (context, state) => const DashboardPage(title: 'General Dashboard'),
+        builder: (context, state) =>
+            const DashboardPage(title: 'General Dashboard'),
       ),
-
       GoRoute(
         path: '/dashboard/alliance',
         builder: (context, state) => const AllianceDashboardPage(),
       ),
-
+      GoRoute(
+        path: '/dashboard/associate',
+        builder: (context, state) => const AssociateDashboardPage(),
+      ),
+      GoRoute(
+        path: '/media-kit',
+        builder: (context, state) => const MediaKitPage(),
+      ),
       GoRoute(
         path: '/form/:formId',
         name: 'dynamicForm',
         builder: (context, state) {
           final formId = state.pathParameters['formId']!;
           final initialValues = state.extra as Map<String, dynamic>?;
-          return DynamicFormPage(formId: formId, initialValues: initialValues);
+          return DynamicFormPageWrapper(
+              formId: formId, initialValues: initialValues);
         },
       ),
-
       GoRoute(
         path: '/link',
         name: 'webLink',
@@ -121,7 +120,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           return WebLinkPage(url: url);
         },
       ),
-
       GoRoute(
         path: '/list/:listId',
         name: 'itemList',
@@ -137,7 +135,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           return NdaPage(nextRoute: next);
         },
       ),
-
     ],
   );
 });

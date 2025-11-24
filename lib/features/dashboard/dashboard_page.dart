@@ -8,8 +8,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:regen_global/core/form_engine/models.dart' as fe;
 
 // Adjust these paths to your structure if needed
-import '../catalogs/catalog.dart';   // exports: dashboardLinks + tile model
-import '../../dev/dev_tools.dart';     // switchPlan(), dashboardPathForPlan()
+import '../catalogs/catalog.dart'; // exports: dashboardLinks + tile model
+import '../../dev/dev_tools.dart'; // switchPlan(), dashboardPathForPlan()
 
 class DashboardPage extends StatelessWidget {
   final String title;
@@ -32,15 +32,24 @@ class DashboardPage extends StatelessWidget {
                   switch (value) {
                     case 'alliance':
                       await switchPlan('alliance');
-                      m.showSnackBar(const SnackBar(content: Text('Switched to Alliance')));
+                      m.showSnackBar(const SnackBar(
+                          content: Text('Switched to Alliance')));
                       if (!context.mounted) return;
                       context.go('/dashboard/alliance');
                       break;
                     case 'general':
                       await switchPlan('general');
-                      m.showSnackBar(const SnackBar(content: Text('Switched to General')));
+                      m.showSnackBar(
+                          const SnackBar(content: Text('Switched to General')));
                       if (!context.mounted) return;
                       context.go('/dashboard/general');
+                      break;
+                    case 'associate':
+                      await switchPlan('associate');
+                      m.showSnackBar(const SnackBar(
+                          content: Text('Switched to Associate')));
+                      if (!context.mounted) return;
+                      context.go('/dashboard/associate');
                       break;
                     case 'signout':
                       await Supabase.instance.client.auth.signOut();
@@ -49,12 +58,17 @@ class DashboardPage extends StatelessWidget {
                       break;
                   }
                 } catch (e) {
-                  m.showSnackBar(SnackBar(content: Text('Dev action failed: $e')));
+                  m.showSnackBar(
+                      SnackBar(content: Text('Dev action failed: $e')));
                 }
               },
               itemBuilder: (context) => const [
-                PopupMenuItem(value: 'alliance', child: Text('Switch to Alliance')),
-                PopupMenuItem(value: 'general', child: Text('Switch to General')),
+                PopupMenuItem(
+                    value: 'alliance', child: Text('Switch to Alliance')),
+                PopupMenuItem(
+                    value: 'general', child: Text('Switch to General')),
+                PopupMenuItem(
+                    value: 'associate', child: Text('Switch to Associate')),
                 PopupMenuDivider(),
                 PopupMenuItem(value: 'signout', child: Text('Sign out')),
               ],
@@ -81,7 +95,8 @@ class DashboardPage extends StatelessWidget {
                   if (data.formId != null) {
                     context.push('/form/${data.formId}');
                   }
-                } else if (data.destinationType case fe.DestinationType.external) {
+                } else if (data.destinationType
+                    case fe.DestinationType.external) {
                   if (data.url != null) {
                     final u = Uri.encodeComponent(data.url!);
                     context.push('/link?url=$u');
@@ -127,11 +142,11 @@ class _TileCardContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10), // a touch smaller than 12
       child: Column(
-        mainAxisSize: MainAxisSize.max,     // take full tile height
+        mainAxisSize: MainAxisSize.max, // take full tile height
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 6),
-          Icon(icon, size: 34),             // slightly smaller icon
+          Icon(icon, size: 34), // slightly smaller icon
           const SizedBox(height: 6),
 
           // EXPANDED block: forces texts to layout within remaining space
@@ -169,4 +184,3 @@ class _TileCardContent extends StatelessWidget {
     );
   }
 }
-

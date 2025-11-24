@@ -12,25 +12,18 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // Optional: keep your existing delay/animation duration
-      await Future.delayed(const Duration(milliseconds: 1200));
-
-      final session = Supabase.instance.client.auth.currentSession;
-
-      if (!mounted) return;
-      if (session != null) {
-        // Already authenticated → go to your existing gate at '/'
-        // Your AuthLandingGate will route to Alliance/General/Paywall as before.
-        context.go('/');
-      } else {
-        // Not signed in → show public landing
-        context.go('/free');
-      }
-    });
-  }
+  @override
+void initState() {
+  super.initState();
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    await Future.delayed(const Duration(milliseconds: 1200));
+    
+    if (!mounted) return;
+    // Always go to free dashboard first
+    // User can login from there if they want
+    context.go('/free');
+  });
+}
 
   @override
   Widget build(BuildContext context) {

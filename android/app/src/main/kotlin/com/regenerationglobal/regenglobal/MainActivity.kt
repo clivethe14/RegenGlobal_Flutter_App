@@ -1,4 +1,4 @@
-package com.example.regenerationglobal.regen_global
+package com.regenerationglobal.regenglobal
 
 import io.flutter.embedding.android.FlutterActivity
 

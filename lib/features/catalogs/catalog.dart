@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/form_engine/models.dart';
 
-
 /// Example catalog of forms and dashboard tiles. Edit here to add new flows.
 final Map<String, FormConfig> formCatalog = {
   'contact_us': FormConfig(
@@ -9,11 +8,32 @@ final Map<String, FormConfig> formCatalog = {
     title: 'Contact Us',
     description: 'Tell us how we can help.',
     fields: [
-      FieldSpec(id: 'name', label: 'Full name', type: FieldType.text, validator: ValidatorSpec(required: true, minLength: 2)),
-      FieldSpec(id: 'email', label: 'Email', type: FieldType.email, validator: ValidatorSpec(required: true)),
-      FieldSpec(id: 'topic', label: 'Topic', type: FieldType.dropdown, options: ['Support', 'Billing', 'Feedback', 'Other'], validator: ValidatorSpec(required: true)),
-      FieldSpec(id: 'message', label: 'Message', type: FieldType.multiline, validator: ValidatorSpec(required: true, minLength: 10)),
-      FieldSpec(id: 'consent', label: 'I agree to be contacted', type: FieldType.checkbox, validator: ValidatorSpec(required: true)),
+      FieldSpec(
+          id: 'name',
+          label: 'Full name',
+          type: FieldType.text,
+          validator: ValidatorSpec(required: true, minLength: 2)),
+      FieldSpec(
+          id: 'email',
+          label: 'Email',
+          type: FieldType.email,
+          validator: ValidatorSpec(required: true)),
+      FieldSpec(
+          id: 'topic',
+          label: 'Topic',
+          type: FieldType.dropdown,
+          options: ['Support', 'Billing', 'Feedback', 'Other'],
+          validator: ValidatorSpec(required: true)),
+      FieldSpec(
+          id: 'message',
+          label: 'Message',
+          type: FieldType.multiline,
+          validator: ValidatorSpec(required: true, minLength: 10)),
+      FieldSpec(
+          id: 'consent',
+          label: 'I agree to be contacted',
+          type: FieldType.checkbox,
+          validator: ValidatorSpec(required: true)),
     ],
   ),
   'lead_capture': FormConfig(
@@ -21,15 +41,36 @@ final Map<String, FormConfig> formCatalog = {
     title: 'Lead Capture',
     description: 'Collect basic lead details for outreach.',
     fields: [
-      FieldSpec(id: 'firstName', label: 'First name', type: FieldType.text, validator: ValidatorSpec(required: true)),
-      FieldSpec(id: 'lastName', label: 'Last name', type: FieldType.text, validator: ValidatorSpec(required: true)),
-      FieldSpec(id: 'phone', label: 'Phone', type: FieldType.phone, validator: ValidatorSpec(required: true)),
-      FieldSpec(id: 'budget', label: 'Budget (USD)', type: FieldType.number, hint: 'e.g., 5000', validator: ValidatorSpec(min: 0)),
-      FieldSpec(id: 'followUp', label: 'Request follow-up call', type: FieldType.switch_),
-      FieldSpec(id: 'preferredDate', label: 'Preferred date', type: FieldType.date),
+      FieldSpec(
+          id: 'firstName',
+          label: 'First name',
+          type: FieldType.text,
+          validator: ValidatorSpec(required: true)),
+      FieldSpec(
+          id: 'lastName',
+          label: 'Last name',
+          type: FieldType.text,
+          validator: ValidatorSpec(required: true)),
+      FieldSpec(
+          id: 'phone',
+          label: 'Phone',
+          type: FieldType.phone,
+          validator: ValidatorSpec(required: true)),
+      FieldSpec(
+          id: 'budget',
+          label: 'Budget (USD)',
+          type: FieldType.number,
+          hint: 'e.g., 5000',
+          validator: ValidatorSpec(min: 0)),
+      FieldSpec(
+          id: 'followUp',
+          label: 'Request follow-up call',
+          type: FieldType.switch_),
+      FieldSpec(
+          id: 'preferredDate', label: 'Preferred date', type: FieldType.date),
     ],
   ),
-  'contact_request' : FormConfig(
+  'contact_request': FormConfig(
     id: 'contact_request',
     title: 'Contact Request',
     description: 'Share your details and what you need. We will reach out.',
@@ -53,6 +94,13 @@ final Map<String, FormConfig> formCatalog = {
         validator: const ValidatorSpec(required: false),
       ),
       FieldSpec(
+        id: 'consultantType',
+        label: 'Type',
+        type: FieldType.dropdown,
+        options: ['Business', 'Environment', 'Health', 'Other'],
+        validator: ValidatorSpec(required: true),
+      ),
+      FieldSpec(
         id: 'requirement',
         label: 'Tell us about your requirement',
         type: FieldType.multiline,
@@ -60,10 +108,11 @@ final Map<String, FormConfig> formCatalog = {
       ),
     ],
   ),
-  'spatial_booking' : FormConfig(
+  'spatial_booking': FormConfig(
     id: 'spatial_booking',
     title: 'Book a Spatial.io Table',
-    description: 'Tell us about your organization and preferred slot. We will contact you to facilitate the booking.',
+    description:
+        'Tell us about your organization and preferred slot. We will contact you to facilitate the booking.',
     fields: [
       FieldSpec(
         id: 'orgName',
@@ -123,10 +172,11 @@ final Map<String, FormConfig> formCatalog = {
       ),
     ],
   ),
-  'magazine_ad_request' : FormConfig(
+  'magazine_ad_request': FormConfig(
     id: 'magazine_ad_request',
     title: 'Regen Global Magazine – Ad Request',
-    description: 'Tell us about your ad. We’ll contact you to finalize details.',
+    description:
+        'Tell us about your ad. We’ll contact you to finalize details.',
     fields: [
       FieldSpec(
         id: 'orgName',
@@ -169,7 +219,12 @@ final Map<String, FormConfig> formCatalog = {
         id: 'placement',
         label: 'Preferred Placement',
         type: FieldType.dropdown,
-        options: ['Front Section', 'Middle Section', 'Back Section', 'No preference'],
+        options: [
+          'Front Section',
+          'Middle Section',
+          'Back Section',
+          'No preference'
+        ],
         validator: ValidatorSpec(required: true),
       ),
       FieldSpec(
@@ -188,7 +243,6 @@ final Map<String, FormConfig> formCatalog = {
   )
 };
 
-
 final List<LinkSpec> dashboardLinks = [
   LinkSpec(
     id: 'latest_regen_global_magazine',
@@ -196,7 +250,8 @@ final List<LinkSpec> dashboardLinks = [
     subtitle: 'Latest edition',
     icon: Icons.book, // or Icons.language, Icons.public
     destinationType: DestinationType.external,
-    url: 'https://drive.google.com/file/d/1_90k_jjtSdSHLEoA2CeNKAuZFx4LnMDD/view', // TODO: replace with real link
+    url:
+        'https://drive.google.com/file/d/1_90k_jjtSdSHLEoA2CeNKAuZFx4LnMDD/view', // TODO: replace with real link
   ),
   LinkSpec(
     id: 'tile_consultants',
@@ -260,7 +315,8 @@ final List<LinkSpec> dashboardLinks = [
     subtitle: 'Learn more',
     icon: Icons.public_outlined, // or Icons.language, Icons.public
     destinationType: DestinationType.external,
-    url: 'https://www.earthstockfoundation.org/documents/ARC.pdf', // TODO: replace with real link
+    url:
+        'https://www.earthstockfoundation.org/documents/ARC.pdf', // TODO: replace with real link
   ),
   LinkSpec(
     id: 'spatial_world_link',
@@ -268,14 +324,14 @@ final List<LinkSpec> dashboardLinks = [
     subtitle: 'Our virtual community',
     icon: Icons.book, // or Icons.language, Icons.public
     destinationType: DestinationType.external,
-    url: 'https://www.spatial.io/s/Earthstock-2024-66b66a85e2c982f2df947c76', // TODO: replace with real link
+    url:
+        'https://www.spatial.io/s/Earthstock-2024-66b66a85e2c982f2df947c76', // TODO: replace with real link
   ),
-
 ];
 
 // Reusable lists that open a form after selection
 final Map<String, ItemListConfig> listCatalog = {
-  'consultants' : ItemListConfig(
+  'consultants': ItemListConfig(
     id: 'consultants',
     title: 'Consultants',
     description: 'Choose an area to proceed.',
@@ -298,7 +354,7 @@ final Map<String, ItemListConfig> listCatalog = {
       ),
     ],
   ),
-  'contractors' : ItemListConfig(
+  'contractors': ItemListConfig(
     id: 'contractors',
     title: 'Contractors',
     description: 'Choose an area to proceed.',
@@ -331,15 +387,19 @@ final Map<String, ItemListConfig> listCatalog = {
         id: 'vimeo',
         title: 'Vimeo',
         linkUrl: 'https://vimeo.com/user207149725',
-      ),ListItemSpec(
+      ),
+      ListItemSpec(
         id: 'whatsApp',
         title: 'WhatsApp',
         linkUrl: 'https://chat.whatsapp.com/BU5a765wYp4KurToTJRAEQ',
-      ),ListItemSpec(
+      ),
+      ListItemSpec(
         id: 'signal',
         title: 'Signal',
-        linkUrl: 'https://signal.group/#CjQKINxZt4H7Y4dtc-70mgM3d0FiJpBoxhEfSLO1VBZusmy6EhBsqagsMDqhZRG-F4eP7kq5',
-      ),ListItemSpec(
+        linkUrl:
+            'https://signal.group/#CjQKINxZt4H7Y4dtc-70mgM3d0FiJpBoxhEfSLO1VBZusmy6EhBsqagsMDqhZRG-F4eP7kq5',
+      ),
+      ListItemSpec(
         id: 'telegram',
         title: 'Telegram',
         linkUrl: 'https://t.me/+73ilYbPKq49iZTJh',
@@ -352,7 +412,7 @@ final Map<String, ItemListConfig> listCatalog = {
       // Add more channels if you like
     ],
   ),
-  'products' : ItemListConfig(
+  'products': ItemListConfig(
     id: 'products',
     title: 'Products',
     description: 'Explore our products and resources.',
@@ -361,7 +421,8 @@ final Map<String, ItemListConfig> listCatalog = {
       ListItemSpec(
         id: 'harm_free_emporium',
         title: 'Harm Free Emporium',
-        linkUrl: 'https://www.regenerationglobal.net/harmFreeEmporium.html', // TODO: replace later
+        linkUrl:
+            'https://www.regenerationglobal.net/harmFreeEmporium.html', // TODO: replace later
       ),
       ListItemSpec(
         id: 'health',
@@ -370,7 +431,7 @@ final Map<String, ItemListConfig> listCatalog = {
       ),
     ],
   ),
-  'initiatives' : ItemListConfig(
+  'initiatives': ItemListConfig(
     id: 'initiatives',
     title: 'Initiatives',
     description: 'Learn about our programs and movements.',
@@ -384,7 +445,8 @@ final Map<String, ItemListConfig> listCatalog = {
       ListItemSpec(
         id: 'transition_to_sustainability',
         title: 'Transition to Sustainability',
-        linkUrl: 'https://www.regenerationglobal.net/fullSpectrumTransition.html',
+        linkUrl:
+            'https://www.regenerationglobal.net/fullSpectrumTransition.html',
       ),
       ListItemSpec(
         id: 'regen_responders',
@@ -398,7 +460,7 @@ final Map<String, ItemListConfig> listCatalog = {
       ),
     ],
   ),
-  'programs' : ItemListConfig(
+  'programs': ItemListConfig(
     id: 'programs',
     title: 'Programs',
     description: 'Explore our current programs.',
@@ -421,7 +483,7 @@ final Map<String, ItemListConfig> listCatalog = {
       ),
     ],
   ),
-  'events' : ItemListConfig(
+  'events': ItemListConfig(
     id: 'events',
     title: 'Events',
     description: 'Stay updated with our upcoming and past events.',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../dev/dev_tools.dart';
+import '../../payments/rc_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -33,20 +34,18 @@ class _SignUpPageState extends State<SignUpPage> {
     }
     setState(() => loading = true);
     try {
-      // Save plan in user_metadata
+      // 1) Sign up in Supabase
       final res = await Supabase.instance.client.auth.signUp(
         email: email,
         password: password,
-        data: {'plan': plan}, // store plan now
+        data: {'plan': plan},
       );
 
-      // If email confirmations ON, user might need to confirm first.
-      // For now, route based on what we just set / current session state:
       final session = res.session ?? Supabase.instance.client.auth.currentSession;
       if (!mounted) return;
 
       if (session == null) {
-        // No session yet (confirmations ON) – go to login
+        // No session yet (email confirmations ON) - go to login
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Account created. Please sign in.')),
         );
@@ -54,12 +53,26 @@ class _SignUpPageState extends State<SignUpPage> {
         return;
       }
 
-      // Session present: route to dashboard by plan
+      // 2) Session exists - log in to RevenueCat
+      final userId = session.user.id;
+      print('🔐 Logging into RevenueCat with new user ID: $userId');
+      final rcService = RevenueCatService();
+      await rcService.logIn(userId);
+      print('✅ RevenueCat login successful');
+
+      // 3) Route to dashboard
       context.go('/');
 
     } on AuthException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message)),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
     } finally {
       if (mounted) setState(() => loading = false);
     }
@@ -91,19 +104,16 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                       ),
                     ),
-                    TextField(controller: emailCtrl, decoration: const InputDecoration(labelText: 'Email')),
+                    TextField(
+                      controller: emailCtrl,
+                      decoration: const InputDecoration(labelText: 'Email'),
+                    ),
                     const SizedBox(height: 8),
-                    TextField(controller: passCtrl, obscureText: true, decoration: const InputDecoration(labelText: 'Password')),
-                    const SizedBox(height: 16),
-                    // DropdownButtonFormField<String>(
-                    //   value: plan,
-                    //   items: const [
-                    //     DropdownMenuItem(value: 'general', child: Text('General (for normal customers)')),
-                    //     DropdownMenuItem(value: 'alliance', child: Text('Alliance (for businesses)')),
-                    //   ],
-                    //   onChanged: (v) => setState(() => plan = v ?? 'general'),
-                    //   decoration: const InputDecoration(labelText: 'Subscription Type'),
-                    // ),
+                    TextField(
+                      controller: passCtrl,
+                      obscureText: true,
+                      decoration: const InputDecoration(labelText: 'Password'),
+                    ),
                     const SizedBox(height: 16),
                     FilledButton(
                       onPressed: loading ? null : _signUp,

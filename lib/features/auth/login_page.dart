@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../dev/dev_tools.dart';
+import '../../payments/rc_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -32,18 +33,38 @@ class _LoginPageState extends State<LoginPage> {
     }
     setState(() => loading = true);
     try {
-      await Supabase.instance.client.auth.signInWithPassword(
-        email: email, password: password,
+      // 1) Sign in to Supabase
+      final response = await Supabase.instance.client.auth.signInWithPassword(
+        email: email, 
+        password: password,
       );
+      
+      // 2) Get user ID from Supabase
+      final userId = response.user?.id;
+      
+      if (userId != null) {
+        // 3) Log in to RevenueCat with Supabase user ID
+        print('🔐 Logging into RevenueCat with user ID: $userId');
+        final rcService = RevenueCatService();
+        await rcService.logIn(userId);
+        print('✅ RevenueCat login successful');
+      }
+      
       if (!mounted) return;
 
-      // Route based on user metadata plan
-      final plan = currentPlan();
+      // 4) Route based on entitlements
       context.go('/');
 
     } on AuthException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message)),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
     } finally {
       if (mounted) setState(() => loading = false);
     }
@@ -88,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                       width: double.infinity,
                       child: FilledButton(
                         onPressed: loading ? null : _signIn,
-                        child: Text(loading ? 'Signing in…' : 'Login'),
+                        child: Text(loading ? 'Signing in...' : 'Login'),
                       ),
                     ),
                     const SizedBox(height: 16),
