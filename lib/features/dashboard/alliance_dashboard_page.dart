@@ -9,6 +9,7 @@ import '../../core/form_engine/models.dart' as fe;
 // Common dashboard catalog (tiles) + helpers
 import '../catalogs/catalog.dart'; // exports: dashboardLinks and your tile model
 import '../../dev/dev_tools.dart'; // currentPlan(), switchPlan(), dashboardPathForPlan()
+import 'dashboard_theme.dart';
 
 class AllianceDashboardPage extends StatelessWidget {
   const AllianceDashboardPage({super.key});
@@ -16,6 +17,7 @@ class AllianceDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tiles = dashboardLinks;
+    final colors = DashboardTheme.allianceColors;
 
     // Alliance-only extra cards (append to the end)
     // 1) Spatial booking
@@ -26,6 +28,18 @@ class AllianceDashboardPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Affiliate Dashboard'),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [colors.gradient1, colors.gradient2],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        elevation: 8,
+        titleSpacing: 8,
         actions: [
           if (kDebugMode)
             PopupMenuButton<String>(
@@ -79,111 +93,259 @@ class AllianceDashboardPage extends StatelessWidget {
             ),
         ],
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(12),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          childAspectRatio: 1.15,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [colors.light.withOpacity(0.3), Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
         ),
-        itemCount: itemCount,
-        itemBuilder: (context, i) {
-          final isExtra = i >= tiles.length;
-          if (isExtra) {
-            final extraIndex = i - tiles.length;
-            switch (extraIndex) {
-              case 0: // Spatial booking (existing)
-                return Card(
-                  child: InkWell(
-                    onTap: () => context.push('/form/spatial_booking'),
-                    child: const Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.event_seat_outlined, size: 40),
-                          SizedBox(height: 8),
-                          Text('Book a Spatial.io Table',
-                              textAlign: TextAlign.center),
-                          SizedBox(height: 4),
-                          Text('Promote your organization in our virtual world',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 12)),
-                        ],
+        child: GridView.builder(
+          padding: const EdgeInsets.all(DashboardTheme.gridSpacing),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: DashboardTheme.gridSpacing,
+            crossAxisSpacing: DashboardTheme.gridSpacing,
+            childAspectRatio: 1.15,
+          ),
+          itemCount: itemCount,
+          itemBuilder: (context, i) {
+            final isExtra = i >= tiles.length;
+            if (isExtra) {
+              final extraIndex = i - tiles.length;
+              switch (extraIndex) {
+                case 0: // Spatial booking (existing)
+                  return Card(
+                    elevation: 8,
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(DashboardTheme.borderRadius),
+                    ),
+                    shadowColor: colors.primary.withOpacity(0.3),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(DashboardTheme.borderRadius),
+                        gradient: LinearGradient(
+                          colors: [colors.light.withOpacity(0.5), Colors.white],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: InkWell(
+                        borderRadius:
+                            BorderRadius.circular(DashboardTheme.borderRadius),
+                        onTap: () => context.push('/form/spatial_booking'),
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.all(DashboardTheme.cardPadding),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      blurRadius: 8,
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(Icons.event_seat_outlined,
+                                    size: 40, color: colors.primary),
+                              ),
+                              const SizedBox(height: 12),
+                              Flexible(
+                                child: Text('Book a Spatial.io Table',
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                            fontWeight: FontWeight.bold)),
+                              ),
+                              const SizedBox(height: 4),
+                              Flexible(
+                                child: Text(
+                                    'Promote your organization in our virtual world',
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                            color: Colors.grey.shade600)),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                );
-              case 1: // NEW: Magazine Ad Request
-                return Card(
-                  child: InkWell(
-                    onTap: () => context.push('/media-kit'),
-                    child: const Padding(
-                      padding: EdgeInsets.all(12),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.menu_book_outlined, size: 40),
-                          SizedBox(height: 8),
-                          Text('Regen Media Kit', textAlign: TextAlign.center),
-                          SizedBox(height: 4),
-                          Text(
-                              'Sponsorship · Advertisment · Content Submission',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 12)),
-                        ],
+                  );
+                case 1: // NEW: Magazine Ad Request
+                  return Card(
+                    elevation: 8,
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(DashboardTheme.borderRadius),
+                    ),
+                    shadowColor: colors.primary.withOpacity(0.3),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(DashboardTheme.borderRadius),
+                        gradient: LinearGradient(
+                          colors: [colors.light.withOpacity(0.5), Colors.white],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: InkWell(
+                        borderRadius:
+                            BorderRadius.circular(DashboardTheme.borderRadius),
+                        onTap: () => context.push('/media-kit'),
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.all(DashboardTheme.cardPadding),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      blurRadius: 8,
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(Icons.menu_book_outlined,
+                                    size: 40, color: colors.primary),
+                              ),
+                              const SizedBox(height: 12),
+                              Flexible(
+                                child: Text('Regen Media Kit',
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                            fontWeight: FontWeight.bold)),
+                              ),
+                              const SizedBox(height: 4),
+                              Flexible(
+                                child: Text(
+                                    'Sponsorship · Advertisement · Content Submission',
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                            color: Colors.grey.shade600)),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                );
+                  );
+              }
             }
-          }
 
-          // Otherwise render your existing catalog tile at index i
-          final data = tiles[i];
-          return Card(
-            child: InkWell(
-              onTap: () {
-                switch (data.destinationType) {
-                  case fe.DestinationType.form:
-                    if (data.formId != null)
-                      context.push('/form/${data.formId}');
-                    break;
-                  case fe.DestinationType.external:
-                    if (data.url != null) {
-                      final u = Uri.encodeComponent(data.url!);
-                      context.push('/link?url=$u');
+            // Otherwise render your existing catalog tile at index i
+            final data = tiles[i];
+            return Card(
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(DashboardTheme.borderRadius),
+              ),
+              shadowColor: colors.primary.withOpacity(0.3),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(DashboardTheme.borderRadius),
+                  gradient: LinearGradient(
+                    colors: [colors.light.withOpacity(0.5), Colors.white],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: InkWell(
+                  borderRadius:
+                      BorderRadius.circular(DashboardTheme.borderRadius),
+                  onTap: () {
+                    switch (data.destinationType) {
+                      case fe.DestinationType.form:
+                        if (data.formId != null)
+                          context.push('/form/${data.formId}');
+                        break;
+                      case fe.DestinationType.external:
+                        if (data.url != null) {
+                          final u = Uri.encodeComponent(data.url!);
+                          context.push('/link?url=$u');
+                        }
+                        break;
+                      case fe.DestinationType.list:
+                        if (data.listId != null)
+                          context.push('/list/${data.listId}');
+                        break;
                     }
-                    break;
-                  case fe.DestinationType.list:
-                    if (data.listId != null)
-                      context.push('/list/${data.listId}');
-                    break;
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(data.icon, size: 40),
-                    const SizedBox(height: 8),
-                    Text(data.title,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleMedium),
-                    if (data.subtitle.isNotEmpty) ...[
-                      const SizedBox(height: 4),
-                      Text(data.subtitle,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodySmall),
-                    ],
-                  ],
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(DashboardTheme.cardPadding),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                blurRadius: 8,
+                              ),
+                            ],
+                          ),
+                          child:
+                              Icon(data.icon, size: 40, color: colors.primary),
+                        ),
+                        const SizedBox(height: 12),
+                        Flexible(
+                          child: Text(data.title,
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold)),
+                        ),
+                        if (data.subtitle.isNotEmpty) ...[
+                          const SizedBox(height: 4),
+                          Flexible(
+                            child: Text(data.subtitle,
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(color: Colors.grey.shade600)),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

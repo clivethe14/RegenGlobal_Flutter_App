@@ -10,6 +10,7 @@ import 'package:regen_global/core/form_engine/models.dart' as fe;
 // Adjust these paths to your structure if needed
 import '../catalogs/catalog.dart'; // exports: dashboardLinks + tile model
 import '../../dev/dev_tools.dart'; // switchPlan(), dashboardPathForPlan()
+import 'dashboard_theme.dart';
 
 class DashboardPage extends StatelessWidget {
   final String title;
@@ -18,10 +19,23 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tiles = dashboardLinks;
+    final colors = DashboardTheme.generalColors;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [colors.gradient1, colors.gradient2],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        elevation: 8,
+        titleSpacing: 8,
         actions: [
           if (kDebugMode)
             PopupMenuButton<String>(
@@ -75,46 +89,74 @@ class DashboardPage extends StatelessWidget {
             ),
         ],
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(12),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          // Slightly taller cards to reduce risk of overflow on long titles
-          childAspectRatio: 1.05,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [colors.light.withOpacity(0.3), Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
         ),
-        itemCount: tiles.length,
-        itemBuilder: (context, i) {
-          final data = tiles[i];
+        child: GridView.builder(
+          padding: const EdgeInsets.all(DashboardTheme.gridSpacing),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: DashboardTheme.gridSpacing,
+            crossAxisSpacing: DashboardTheme.gridSpacing,
+            childAspectRatio: 1.05,
+          ),
+          itemCount: tiles.length,
+          itemBuilder: (context, i) {
+            final data = tiles[i];
 
-          return Card(
-            child: InkWell(
-              onTap: () {
-                if (data.destinationType case fe.DestinationType.form) {
-                  if (data.formId != null) {
-                    context.push('/form/${data.formId}');
-                  }
-                } else if (data.destinationType
-                    case fe.DestinationType.external) {
-                  if (data.url != null) {
-                    final u = Uri.encodeComponent(data.url!);
-                    context.push('/link?url=$u');
-                  }
-                } else if (data.destinationType case fe.DestinationType.list) {
-                  if (data.listId != null) {
-                    context.push('/list/${data.listId}');
-                  }
-                }
-              },
-              child: _TileCardContent(
-                icon: data.icon,
-                title: data.title,
-                subtitle: (data.subtitle.isNotEmpty) ? data.subtitle : null,
+            return Card(
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(DashboardTheme.borderRadius),
               ),
-            ),
-          );
-        },
+              shadowColor: colors.primary.withOpacity(0.3),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(DashboardTheme.borderRadius),
+                  gradient: LinearGradient(
+                    colors: [colors.light.withOpacity(0.5), Colors.white],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: InkWell(
+                  borderRadius:
+                      BorderRadius.circular(DashboardTheme.borderRadius),
+                  onTap: () {
+                    if (data.destinationType case fe.DestinationType.form) {
+                      if (data.formId != null) {
+                        context.push('/form/${data.formId}');
+                      }
+                    } else if (data.destinationType
+                        case fe.DestinationType.external) {
+                      if (data.url != null) {
+                        final u = Uri.encodeComponent(data.url!);
+                        context.push('/link?url=$u');
+                      }
+                    } else if (data.destinationType
+                        case fe.DestinationType.list) {
+                      if (data.listId != null) {
+                        context.push('/list/${data.listId}');
+                      }
+                    }
+                  },
+                  child: _TileCardContent(
+                    icon: data.icon,
+                    title: data.title,
+                    subtitle: (data.subtitle.isNotEmpty) ? data.subtitle : null,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -136,26 +178,43 @@ class _TileCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = Theme.of(context).textTheme.titleMedium;
-    final subStyle = Theme.of(context).textTheme.bodySmall;
+    final titleStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
+          fontWeight: FontWeight.bold,
+          color: Colors.grey.shade800,
+        );
+    final subStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: Colors.grey.shade600,
+        );
 
     return Padding(
-      padding: const EdgeInsets.all(10), // a touch smaller than 12
+      padding: const EdgeInsets.all(8.0),
       child: Column(
-        mainAxisSize: MainAxisSize.max, // take full tile height
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Icon(icon, size: 36, color: Colors.blue.shade600),
+          ),
           const SizedBox(height: 6),
-          Icon(icon, size: 34), // slightly smaller icon
-          const SizedBox(height: 6),
-
-          // EXPANDED block: forces texts to layout within remaining space
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
+          Flexible(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  child: Text(
                     title,
                     textAlign: TextAlign.center,
                     maxLines: 2,
@@ -163,22 +222,23 @@ class _TileCardContent extends StatelessWidget {
                     style: titleStyle,
                     softWrap: true,
                   ),
-                  if (subtitle != null && subtitle!.isNotEmpty) ...[
-                    const SizedBox(height: 4),
-                    Text(
+                ),
+                if (subtitle != null && subtitle!.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Flexible(
+                    child: Text(
                       subtitle!,
                       textAlign: TextAlign.center,
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: subStyle,
                       softWrap: true,
                     ),
-                  ],
+                  ),
                 ],
-              ),
+              ],
             ),
           ),
-          const SizedBox(height: 6),
         ],
       ),
     );

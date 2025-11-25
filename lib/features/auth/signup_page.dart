@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../dev/dev_tools.dart';
 import '../../payments/rc_service.dart';
+import '../dashboard/dashboard_theme.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -41,7 +42,8 @@ class _SignUpPageState extends State<SignUpPage> {
         data: {'plan': plan},
       );
 
-      final session = res.session ?? Supabase.instance.client.auth.currentSession;
+      final session =
+          res.session ?? Supabase.instance.client.auth.currentSession;
       if (!mounted) return;
 
       if (session == null) {
@@ -62,7 +64,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
       // 3) Route to dashboard
       context.go('/');
-
     } on AuthException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -80,52 +81,138 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = DashboardTheme.generalColors;
+
     return PopScope(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Sign Up')),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height -
-                    MediaQuery.of(context).padding.top -
-                    kToolbarHeight,
+        appBar: AppBar(
+          title: const Text('Sign Up'),
+          centerTitle: true,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [colors.gradient1, colors.gradient2],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-              child: IntrinsicHeight(
-                child: Column(
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 24.0),
-                        child: Image.asset(
-                          'assets/images/logo.png',
-                          height: 120,
+            ),
+          ),
+          elevation: 8,
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [colors.light.withOpacity(0.3), Colors.white],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top -
+                      kToolbarHeight,
+                ),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(top: 32.0, bottom: 32.0),
+                          child: Image.asset(
+                            'assets/images/logo.png',
+                            height: 120,
+                          ),
                         ),
                       ),
-                    ),
-                    TextField(
-                      controller: emailCtrl,
-                      decoration: const InputDecoration(labelText: 'Email'),
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: passCtrl,
-                      obscureText: true,
-                      decoration: const InputDecoration(labelText: 'Password'),
-                    ),
-                    const SizedBox(height: 16),
-                    FilledButton(
-                      onPressed: loading ? null : _signUp,
-                      child: Text(loading ? 'Creating...' : 'Create account'),
-                    ),
-                    const SizedBox(height: 8),
-                    TextButton(
-                      onPressed: () => context.go('/login'),
-                      child: const Text('Already have an account? Login'),
-                    ),
-                    const Spacer(),
-                  ],
+                      Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              TextField(
+                                controller: emailCtrl,
+                                decoration: InputDecoration(
+                                  labelText: 'Email',
+                                  labelStyle: TextStyle(color: colors.primary),
+                                  prefixIcon:
+                                      Icon(Icons.email, color: colors.primary),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide(
+                                        color: colors.primary, width: 2),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: passCtrl,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  labelStyle: TextStyle(color: colors.primary),
+                                  prefixIcon:
+                                      Icon(Icons.lock, color: colors.primary),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide(
+                                        color: colors.primary, width: 2),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                              SizedBox(
+                                width: double.infinity,
+                                height: 48,
+                                child: ElevatedButton(
+                                  onPressed: loading ? null : _signUp,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: colors.primary,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    elevation: 6,
+                                  ),
+                                  child: Text(
+                                    loading ? 'Creating...' : 'Create account',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              TextButton(
+                                onPressed: () => context.go('/login'),
+                                child: Text(
+                                  'Already have an account? Login',
+                                  style: TextStyle(
+                                      color: colors.primary, fontSize: 14),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
                 ),
               ),
             ),
