@@ -47,7 +47,7 @@ class DashboardPage extends StatelessWidget {
                     case 'alliance':
                       await switchPlan('alliance');
                       m.showSnackBar(const SnackBar(
-                          content: Text('Switched to Alliance')));
+                          content: Text('Switched to Affiliate')));
                       if (!context.mounted) return;
                       context.go('/dashboard/alliance');
                       break;
@@ -78,7 +78,7 @@ class DashboardPage extends StatelessWidget {
               },
               itemBuilder: (context) => const [
                 PopupMenuItem(
-                    value: 'alliance', child: Text('Switch to Alliance')),
+                    value: 'alliance', child: Text('Switch to Affiliate')),
                 PopupMenuItem(
                     value: 'general', child: Text('Switch to General')),
                 PopupMenuItem(
@@ -103,7 +103,7 @@ class DashboardPage extends StatelessWidget {
             crossAxisCount: 2,
             mainAxisSpacing: DashboardTheme.gridSpacing,
             crossAxisSpacing: DashboardTheme.gridSpacing,
-            childAspectRatio: 1.05,
+            childAspectRatio: 0.95,
           ),
           itemCount: tiles.length,
           itemBuilder: (context, i) {
@@ -181,9 +181,11 @@ class _TileCardContent extends StatelessWidget {
     final titleStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.bold,
           color: Colors.grey.shade800,
+          fontSize: 13,
         );
     final subStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
           color: Colors.grey.shade600,
+          fontSize: 11,
         );
 
     return Padding(
@@ -206,7 +208,7 @@ class _TileCardContent extends StatelessWidget {
                 ),
               ],
             ),
-            child: Icon(icon, size: 36, color: Colors.blue.shade600),
+            child: Icon(icon, size: 29, color: Colors.blue.shade600),
           ),
           const SizedBox(height: 6),
           Flexible(

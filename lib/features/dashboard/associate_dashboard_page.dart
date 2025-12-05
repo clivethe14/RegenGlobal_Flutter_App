@@ -16,13 +16,17 @@ class AssociateDashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tiles = dashboardLinks;
+    // Filter out International Community Alliances for Associate dashboard
+    final tiles = dashboardLinks
+        .where((t) => t.id != 'tile_international_community_alliances')
+        .toList();
     final colors = DashboardTheme.associateColors;
 
     // Associate-only extra cards (append to the end)
     // 1) Spatial booking
     // 2) Magazine ad request
-    const extraCount = 2;
+    // 3) Podcast booking
+    const extraCount = 3;
     final itemCount = tiles.length + extraCount;
 
     return Scaffold(
@@ -51,7 +55,7 @@ class AssociateDashboardPage extends StatelessWidget {
                     case 'alliance':
                       await switchPlan('alliance');
                       m.showSnackBar(const SnackBar(
-                          content: Text('Switched to Alliance')));
+                          content: Text('Switched to Affiliate')));
                       if (!context.mounted) return;
                       context.go(dashboardPathForPlan('alliance'));
                       break;
@@ -107,7 +111,7 @@ class AssociateDashboardPage extends StatelessWidget {
             crossAxisCount: 2,
             mainAxisSpacing: DashboardTheme.gridSpacing,
             crossAxisSpacing: DashboardTheme.gridSpacing,
-            childAspectRatio: 1.15,
+            childAspectRatio: 1.0,
           ),
           itemCount: itemCount,
           itemBuilder: (context, i) {
@@ -131,6 +135,14 @@ class AssociateDashboardPage extends StatelessWidget {
                       'Sponsorship · Advertisement · Content Submission',
                       colors,
                       () => context.push('/media-kit'));
+                case 2:
+                  return _buildExtraCard(
+                      context,
+                      Icons.mic_outlined,
+                      'Book a Podcast Spot',
+                      'Share your expertise with our audience',
+                      colors,
+                      () => context.push('/form/podcast_booking'));
               }
             }
 
@@ -191,7 +203,7 @@ class AssociateDashboardPage extends StatelessWidget {
                             ],
                           ),
                           child:
-                              Icon(data.icon, size: 40, color: colors.primary),
+                              Icon(data.icon, size: 29, color: colors.primary),
                         ),
                         const SizedBox(height: 12),
                         Flexible(
@@ -200,7 +212,9 @@ class AssociateDashboardPage extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold)),
+                                  ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13)),
                         ),
                         if (data.subtitle.isNotEmpty) ...[
                           const SizedBox(height: 4),
@@ -210,7 +224,9 @@ class AssociateDashboardPage extends StatelessWidget {
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall
-                                    ?.copyWith(color: Colors.grey.shade600)),
+                                    ?.copyWith(
+                                        color: Colors.grey.shade600,
+                                        fontSize: 11)),
                           ),
                         ],
                       ],
@@ -268,25 +284,21 @@ class AssociateDashboardPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Icon(icon, size: 40, color: colors.primary),
+                  child: Icon(icon, size: 29, color: colors.primary),
                 ),
                 const SizedBox(height: 12),
                 Flexible(
                   child: Text(title,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(fontWeight: FontWeight.bold)),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold, fontSize: 13)),
                 ),
                 const SizedBox(height: 4),
                 Flexible(
                   child: Text(subtitle,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(color: Colors.grey.shade600)),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.grey.shade600, fontSize: 11)),
                 ),
               ],
             ),

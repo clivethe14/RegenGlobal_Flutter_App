@@ -14,6 +14,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
+  final confirmPassCtrl = TextEditingController();
   String plan = 'general'; // default
   bool loading = false;
 
@@ -21,15 +22,25 @@ class _SignUpPageState extends State<SignUpPage> {
   void dispose() {
     emailCtrl.dispose();
     passCtrl.dispose();
+    confirmPassCtrl.dispose();
     super.dispose();
   }
 
   Future<void> _signUp() async {
     final email = emailCtrl.text.trim();
     final password = passCtrl.text;
-    if (email.isEmpty || password.isEmpty) {
+    final confirmPassword = confirmPassCtrl.text;
+
+    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter email and password')),
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
+
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Passwords do not match')),
       );
       return;
     }
@@ -47,11 +58,18 @@ class _SignUpPageState extends State<SignUpPage> {
       if (!mounted) return;
 
       if (session == null) {
-        // No session yet (email confirmations ON) - go to login
+        // No session yet (email confirmations ON) - show confirmation message
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Account created. Please sign in.')),
+          const SnackBar(
+            content: Text(
+                'Account created! Please confirm your email before signing in.'),
+            duration: Duration(seconds: 5),
+          ),
         );
-        context.go('/login');
+        Future.delayed(const Duration(seconds: 2), () {
+          if (mounted) context.go('/login');
+        });
         return;
       }
 
@@ -161,6 +179,25 @@ class _SignUpPageState extends State<SignUpPage> {
                                 obscureText: true,
                                 decoration: InputDecoration(
                                   labelText: 'Password',
+                                  labelStyle: TextStyle(color: colors.primary),
+                                  prefixIcon:
+                                      Icon(Icons.lock, color: colors.primary),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    borderSide: BorderSide(
+                                        color: colors.primary, width: 2),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: confirmPassCtrl,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  labelText: 'Confirm Password',
                                   labelStyle: TextStyle(color: colors.primary),
                                   prefixIcon:
                                       Icon(Icons.lock, color: colors.primary),

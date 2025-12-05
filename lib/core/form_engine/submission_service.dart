@@ -55,6 +55,7 @@ class SupabaseSubmissionService implements SubmissionService {
   final String contractorsTable;
   final String spatialBookingsTable;
   final String magazineAdsTable;
+  final String podcastBookingsTable;
 
   SupabaseSubmissionService({
     SupabaseClient? client,
@@ -62,6 +63,7 @@ class SupabaseSubmissionService implements SubmissionService {
     this.contractorsTable = 'contractor_requests',
     this.spatialBookingsTable = 'spatial_bookings',
     this.magazineAdsTable = 'magazine_ad_requests',
+    this.podcastBookingsTable = 'podcast_bookings',
   }) : _client = client ?? Supabase.instance.client;
 
   String _tableFor(String formId, Map<String, dynamic> payload) {
@@ -70,6 +72,7 @@ class SupabaseSubmissionService implements SubmissionService {
     // Alliance-only forms
     if (fid == 'spatial_booking') return spatialBookingsTable;
     if (fid == 'magazine_ad_request') return magazineAdsTable;
+    if (fid == 'podcast_booking') return podcastBookingsTable;
 
     // Consultants / Contractors contact form
     if (fid == 'contact_request') {
@@ -96,14 +99,21 @@ class SupabaseSubmissionService implements SubmissionService {
     final safePayload = (_jsonSafe(payload) as Map<String, dynamic>);
     final table = _tableFor(formId, payload);
 
-    // Base columns shared by all tables.
-    final record = <String, dynamic>{
-      'form_id': formId,
-      'form_version': safePayload['_formVersion'],
-      'payload': safePayload,
-      'submitted_at': DateTime.now().toIso8601String(),
-      // NOTE: If you set DEFAULT auth.uid() on user_id in SQL, you don't need to send user_id here.
-    };
+    // Base columns shared by most tables (but not podcast_bookings).
+    final record = <String, dynamic>{};
+
+    // Only add metadata columns if the table supports them
+    if (table != podcastBookingsTable) {
+      record.addAll({
+        'form_id': formId,
+        'form_version': safePayload['_formVersion'],
+        'payload': safePayload,
+        'submitted_at': DateTime.now().toIso8601String(),
+      });
+    } else {
+      // For podcast_bookings, just add created_at (updated_at is handled by trigger)
+      record['created_at'] = DateTime.now().toIso8601String();
+    }
 
     // Add only columns that exist on the destination table.
     if (table == spatialBookingsTable) {
@@ -131,6 +141,22 @@ class SupabaseSubmissionService implements SubmissionService {
         'placement': safePayload['placement'],
         'budget': safePayload['budget'],
         'notes': safePayload['notes'],
+      });
+    } else if (table == podcastBookingsTable) {
+      // podcast_bookings schema:
+      // user_id, org_name, contact_name, email, phone, podcast_topic, speaker_expertise, preferred_date, website, additional_notes
+      final userId = session?.user.id;
+      record.addAll({
+        if (userId != null) 'user_id': userId,
+        'org_name': safePayload['orgName'],
+        'contact_name': safePayload['contactName'],
+        'email': safePayload['email'],
+        'phone': safePayload['phone'],
+        'podcast_topic': safePayload['podcastTopic'],
+        'speaker_expertise': safePayload['speakerExpertise'],
+        'preferred_date': safePayload['preferredDate'],
+        'website': safePayload['website'],
+        'additional_notes': safePayload['additionalNotes'],
       });
     } else {
       // consultant_requests / contractor_requests schema:

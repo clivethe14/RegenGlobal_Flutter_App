@@ -11,7 +11,7 @@ class DashboardTheme {
     gradient2: Color(0xFF4CAF50),
   );
 
-  static const allianceColors = ColorPalette(
+  static const affiliateColors = ColorPalette(
     primary: Color(0xFF1565C0), // Deep blue
     accent: Color(0xFF42A5F5),
     light: Color(0xFFC5D9F1),
@@ -19,12 +19,15 @@ class DashboardTheme {
     gradient2: Color(0xFF1976D2),
   );
 
+  // Alias for backwards compatibility
+  static const allianceColors = affiliateColors;
+
   static const associateColors = ColorPalette(
-    primary: Color(0xFFC62828), // Deep red
-    accent: Color(0xFFEF5350),
-    light: Color(0xFFFCE4EC),
-    gradient1: Color(0xFF8B0000),
-    gradient2: Color(0xFFD32F2F),
+    primary: Color(0xFFFFB300), // Rich gold
+    accent: Color(0xFFFFC107),
+    light: Color(0xFFFFF3E0),
+    gradient1: Color(0xFFF57F17),
+    gradient2: Color(0xFFFFB300),
   );
 
   // Spacing

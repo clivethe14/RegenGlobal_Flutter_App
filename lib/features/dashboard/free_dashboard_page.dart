@@ -57,7 +57,7 @@ class FreeDashboardPage extends StatelessWidget {
                     mainAxisSpacing: DashboardTheme.gridSpacing,
                     crossAxisSpacing: DashboardTheme.gridSpacing,
                     // Larger cards for only 2 tiles
-                    childAspectRatio: 0.75,
+                    childAspectRatio: 0.65,
                   ),
                   itemCount: tiles.length,
                   itemBuilder: (context, i) {
@@ -123,51 +123,44 @@ class FreeDashboardPage extends StatelessWidget {
               const SizedBox(height: 20),
 
               // Sign in / Create account row (push so back returns to Free)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Column(
                 children: [
-                  Flexible(
-                    child: ElevatedButton(
-                      onPressed: () => context.push('/login'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: colors.primary,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 10,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 8,
+                  ElevatedButton(
+                    onPressed: () => context.push('/login'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colors.primary,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
                       ),
-                      child: const Text(
-                        'Sign In',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                        overflow: TextOverflow.ellipsis,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
+                      elevation: 8,
+                    ),
+                    child: const Text(
+                      'Sign In',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: OutlinedButton(
-                      onPressed: () => context.push('/signup'),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 10,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        side: BorderSide(color: colors.primary, width: 2),
+                  const SizedBox(height: 12),
+                  OutlinedButton(
+                    onPressed: () => context.push('/signup'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
                       ),
-                      child: Text(
-                        'Create Account',
-                        style: TextStyle(
-                            color: colors.primary, fontWeight: FontWeight.bold),
-                        overflow: TextOverflow.ellipsis,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
+                      side: BorderSide(color: colors.primary, width: 2),
+                    ),
+                    child: Text(
+                      'Create Membership Account',
+                      style: TextStyle(
+                          color: colors.primary, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -200,9 +193,11 @@ class _FreeTileCardContent extends StatelessWidget {
     final titleStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.bold,
           color: Colors.grey.shade800,
+          fontSize: 13,
         );
     final subStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
           color: Colors.grey.shade600,
+          fontSize: 11,
         );
 
     return Padding(

@@ -51,7 +51,7 @@ class AllianceDashboardPage extends StatelessWidget {
                     case 'alliance':
                       await switchPlan('alliance');
                       m.showSnackBar(const SnackBar(
-                          content: Text('Switched to Alliance')));
+                          content: Text('Switched to Affiliate')));
                       if (!context.mounted) return;
                       context.go(dashboardPathForPlan('alliance'));
                       break;
@@ -107,7 +107,7 @@ class AllianceDashboardPage extends StatelessWidget {
             crossAxisCount: 2,
             mainAxisSpacing: DashboardTheme.gridSpacing,
             crossAxisSpacing: DashboardTheme.gridSpacing,
-            childAspectRatio: 1.15,
+            childAspectRatio: 1.0,
           ),
           itemCount: itemCount,
           itemBuilder: (context, i) {
@@ -156,7 +156,7 @@ class AllianceDashboardPage extends StatelessWidget {
                                   ],
                                 ),
                                 child: Icon(Icons.event_seat_outlined,
-                                    size: 40, color: colors.primary),
+                                    size: 29, color: colors.primary),
                               ),
                               const SizedBox(height: 12),
                               Flexible(
@@ -226,7 +226,7 @@ class AllianceDashboardPage extends StatelessWidget {
                                   ],
                                 ),
                                 child: Icon(Icons.menu_book_outlined,
-                                    size: 40, color: colors.primary),
+                                    size: 29, color: colors.primary),
                               ),
                               const SizedBox(height: 12),
                               Flexible(
@@ -304,20 +304,19 @@ class AllianceDashboardPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                blurRadius: 8,
-                              ),
-                            ],
-                          ),
-                          child:
-                              Icon(data.icon, size: 40, color: colors.primary),
-                        ),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  blurRadius: 8,
+                                ),
+                              ],
+                            ),
+                            child: Icon(data.icon,
+                                size: 32, color: colors.primary)),
                         const SizedBox(height: 12),
                         Flexible(
                           child: Text(data.title,
@@ -325,7 +324,9 @@ class AllianceDashboardPage extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold)),
+                                  ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13)),
                         ),
                         if (data.subtitle.isNotEmpty) ...[
                           const SizedBox(height: 4),
