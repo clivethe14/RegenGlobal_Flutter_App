@@ -103,6 +103,11 @@ class FreeDashboardPage extends StatelessWidget {
                               if (data.listId != null) {
                                 context.push('/list/${data.listId}');
                               }
+                            } else if (data.destinationType
+                                case fe.DestinationType.route) {
+                              if (data.routePath != null) {
+                                context.push(data.routePath!);
+                              }
                             }
                           },
                           child: _FreeTileCardContent(

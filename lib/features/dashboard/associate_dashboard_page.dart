@@ -16,10 +16,22 @@ class AssociateDashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Filter out International Community Alliances for Associate dashboard
+    // Filter out International Community Alliances and replace social_channels with tier-specific version
     final tiles = dashboardLinks
         .where((t) => t.id != 'tile_international_community_alliances')
-        .toList();
+        .map((link) {
+      if (link.id == 'tile_social') {
+        return fe.LinkSpec(
+          id: link.id,
+          title: link.title,
+          subtitle: link.subtitle,
+          icon: link.icon,
+          destinationType: link.destinationType,
+          listId: 'social_channels_associate',
+        );
+      }
+      return link;
+    }).toList();
     final colors = DashboardTheme.associateColors;
 
     // Associate-only extra cards (append to the end)
@@ -182,6 +194,10 @@ class AssociateDashboardPage extends StatelessWidget {
                       case fe.DestinationType.list:
                         if (data.listId != null)
                           context.push('/list/${data.listId}');
+                        break;
+                      case fe.DestinationType.route:
+                        if (data.routePath != null)
+                          context.push(data.routePath!);
                         break;
                     }
                   },

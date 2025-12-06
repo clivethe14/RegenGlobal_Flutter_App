@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
-
 /// Types of fields supported by the form engine.
-enum FieldType { text, number, email, phone, multiline, dropdown, checkbox, switch_, date }
-
+enum FieldType {
+  text,
+  number,
+  email,
+  phone,
+  multiline,
+  dropdown,
+  checkbox,
+  switch_,
+  date
+}
 
 /// Validation rules (expand as needed).
 class ValidatorSpec {
@@ -12,7 +20,6 @@ class ValidatorSpec {
   final int? maxLength;
   final num? min;
   final num? max;
-
 
   const ValidatorSpec({
     this.required = false,
@@ -23,7 +30,6 @@ class ValidatorSpec {
   });
 }
 
-
 /// Field definition (schema).
 class FieldSpec {
   final String id; // key in the output map
@@ -32,7 +38,6 @@ class FieldSpec {
   final String? hint;
   final List<String>? options; // for dropdown
   final ValidatorSpec validator;
-
 
   const FieldSpec({
     required this.id,
@@ -44,7 +49,6 @@ class FieldSpec {
   });
 }
 
-
 /// Per-form configuration.
 class FormConfig {
   final String id;
@@ -52,7 +56,6 @@ class FormConfig {
   final String? description;
   final List<FieldSpec> fields;
   final String? submitEndpoint; // reserved for future use
-
 
   const FormConfig({
     required this.id,
@@ -63,10 +66,8 @@ class FormConfig {
   });
 }
 
-
 /// Dashboard link: either opens a form or an external URL.
-enum DestinationType { form, external, list }
-
+enum DestinationType { form, external, list, route }
 
 class LinkSpec {
   final String id;
@@ -77,7 +78,7 @@ class LinkSpec {
   final String? formId; // when destinationType == form
   final String? url; // when destinationType == external
   final String? listId;
-
+  final String? routePath; // when destinationType == route
 
   const LinkSpec({
     required this.id,
@@ -87,7 +88,8 @@ class LinkSpec {
     required this.destinationType,
     this.formId,
     this.url,
-    this.listId
+    this.listId,
+    this.routePath,
   });
 }
 
@@ -96,6 +98,7 @@ class ListItemSpec {
   final String title;
   final String? subtitle;
   final IconData? leadingIcon;
+
   /// Prefill map to seed the target form fields
   final Map<String, dynamic> prefill;
   final String? linkUrl;

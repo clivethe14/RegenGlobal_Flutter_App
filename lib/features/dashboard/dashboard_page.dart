@@ -18,7 +18,20 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tiles = dashboardLinks;
+    // Replace social_channels with tier-specific general version
+    final tiles = dashboardLinks.map((link) {
+      if (link.id == 'tile_social') {
+        return fe.LinkSpec(
+          id: link.id,
+          title: link.title,
+          subtitle: link.subtitle,
+          icon: link.icon,
+          destinationType: link.destinationType,
+          listId: 'social_channels_general',
+        );
+      }
+      return link;
+    }).toList();
     final colors = DashboardTheme.generalColors;
 
     return Scaffold(
@@ -144,6 +157,11 @@ class DashboardPage extends StatelessWidget {
                         case fe.DestinationType.list) {
                       if (data.listId != null) {
                         context.push('/list/${data.listId}');
+                      }
+                    } else if (data.destinationType
+                        case fe.DestinationType.route) {
+                      if (data.routePath != null) {
+                        context.push(data.routePath!);
                       }
                     }
                   },

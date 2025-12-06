@@ -19,6 +19,7 @@ import 'features/splash/splash_page.dart';
 import 'features/auth/nda_page.dart';
 import 'features/dashboard/free_dashboard_page.dart';
 import 'features/paywall/media_kit_page.dart';
+import 'features/programs/programs_page.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
   late final StreamSubscription _sub;
@@ -101,6 +102,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/media-kit',
         builder: (context, state) => const MediaKitPage(),
+      ),
+      GoRoute(
+        path: '/programs',
+        builder: (context, state) => const ProgramsPage(),
       ),
       GoRoute(
         path: '/form/:formId',

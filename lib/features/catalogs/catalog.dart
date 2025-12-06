@@ -420,9 +420,9 @@ final List<LinkSpec> dashboardLinks = [
     id: 'tile_programs',
     title: 'Programs',
     subtitle: 'Explore our programs',
-    icon: Icons.school_outlined, // pick any Material icon you prefer
-    destinationType: DestinationType.list,
-    listId: 'programs',
+    icon: Icons.school_outlined,
+    destinationType: DestinationType.route,
+    routePath: '/programs',
   ),
   LinkSpec(
     id: 'tile_events',
@@ -495,44 +495,157 @@ final Map<String, ItemListConfig> listCatalog = {
       ),
     ],
   ),
+  'social_channels_general': ItemListConfig(
+    id: 'social_channels_general',
+    title: 'Our Social Media Channels',
+    description: 'Stay connected with us on social media.',
+    targetFormId: null, // no form
+    items: const [
+      // Communication Platforms
+      ListItemSpec(
+        id: 'messenger_general',
+        title: 'Facebook Messenger',
+        linkUrl: 'https://m.me/j/AbaMNoJ9PCDic06Q/',
+      ),
+      ListItemSpec(
+        id: 'signal_general',
+        title: 'Signal Group',
+        linkUrl:
+            'https://signal.group/#CjQKIPgMaaANNVgvQUt8-xI18YEEv6pE4ujmetJdg3bMSF3UEhBt6YvplgLoGsf7PFlhib2a',
+      ),
+      ListItemSpec(
+        id: 'whatsapp_general',
+        title: 'WhatsApp Community',
+        linkUrl: 'https://chat.whatsapp.com/IOAC7SZJJDBFhAClknfExI?mode=wwt',
+      ),
+      ListItemSpec(
+        id: 'telegram_general',
+        title: 'Telegram Channel',
+        linkUrl: 'https://t.me/+dEBzfVj-tNVjYWQx',
+      ),
+    ],
+  ),
+  'social_channels_affiliate': ItemListConfig(
+    id: 'social_channels_affiliate',
+    title: 'Our Social Media Channels',
+    description: 'Stay connected with us on social media.',
+    targetFormId: null, // no form
+    items: const [
+      // Communication Platforms
+      ListItemSpec(
+        id: 'whatsapp_affiliate',
+        title: 'WhatsApp Community',
+        linkUrl: 'https://chat.whatsapp.com/BU5a765wYp4KurToTJRAEQ?mode=wwt',
+      ),
+      ListItemSpec(
+        id: 'signal_affiliate',
+        title: 'Signal Group',
+        linkUrl:
+            'https://signal.group/#CjQKINxZt4H7Y4dtc-70mgM3d0FiJpBoxhEfSLO1VBZusmy6EhBsqagsMDqhZRG-F4eP7kq5',
+      ),
+      ListItemSpec(
+        id: 'messenger_affiliate',
+        title: 'Facebook Messenger',
+        linkUrl: 'https://m.me/j/Abbsm8gFA5wGKkDd/',
+      ),
+      ListItemSpec(
+        id: 'telegram_affiliate',
+        title: 'Telegram Channel',
+        linkUrl: 'https://t.me/+73ilYbPKq49iZTJh',
+      ),
+      // Social Media
+      ListItemSpec(
+        id: 'facebook_affiliate',
+        title: 'Facebook Community',
+        linkUrl: 'https://www.facebook.com/share/1DFNBDurSz/?mibextid=wwXIfr',
+      ),
+      ListItemSpec(
+        id: 'youtube_affiliate',
+        title: 'Regen Media TV (YouTube)',
+        linkUrl: 'https://youtube.com/@regenmediatv?si=uh5bBDUSDTeF69en',
+      ),
+      ListItemSpec(
+        id: 'vimeo_affiliate',
+        title: 'Regen Media TV (Vimeo)',
+        linkUrl: 'https://vimeo.com/user207149725',
+      ),
+    ],
+  ),
+  'social_channels_associate': ItemListConfig(
+    id: 'social_channels_associate',
+    title: 'Our Social Media Channels',
+    description: 'Stay connected with us on social media.',
+    targetFormId: null, // no form
+    items: const [
+      // Communication Platforms
+      ListItemSpec(
+        id: 'whatsapp_associate',
+        title: 'WhatsApp Community',
+        linkUrl: 'https://chat.whatsapp.com/BU5a765wYp4KurToTJRAEQ?mode=wwt',
+      ),
+      ListItemSpec(
+        id: 'signal_associate',
+        title: 'Signal Group',
+        linkUrl:
+            'https://signal.group/#CjQKINxZt4H7Y4dtc-70mgM3d0FiJpBoxhEfSLO1VBZusmy6EhBsqagsMDqhZRG-F4eP7kq5',
+      ),
+      ListItemSpec(
+        id: 'messenger_associate',
+        title: 'Facebook Messenger',
+        linkUrl: 'https://m.me/j/Abbsm8gFA5wGKkDd/',
+      ),
+      ListItemSpec(
+        id: 'telegram_associate',
+        title: 'Telegram Channel',
+        linkUrl: 'https://t.me/+73ilYbPKq49iZTJh',
+      ),
+      // Social Media
+      ListItemSpec(
+        id: 'facebook_associate',
+        title: 'Facebook Community',
+        linkUrl: 'https://www.facebook.com/share/1DFNBDurSz/?mibextid=wwXIfr',
+      ),
+      ListItemSpec(
+        id: 'youtube_associate',
+        title: 'Regen Media TV (YouTube)',
+        linkUrl: 'https://youtube.com/@regenmediatv?si=uh5bBDUSDTeF69en',
+      ),
+      ListItemSpec(
+        id: 'vimeo_associate',
+        title: 'Regen Media TV (Vimeo)',
+        linkUrl: 'https://vimeo.com/user207149725',
+      ),
+    ],
+  ),
+  // Fallback list (defaults to general tier - each dashboard overrides this)
   'social_channels': ItemListConfig(
     id: 'social_channels',
     title: 'Our Social Media Channels',
     description: 'Stay connected with us on social media.',
     targetFormId: null, // no form
     items: const [
+      // Communication Platforms
       ListItemSpec(
-        id: 'youtube',
-        title: 'YouTube',
-        linkUrl: 'https://www.youtube.com/@RegenMediaTv',
+        id: 'messenger_general',
+        title: 'Facebook Messenger',
+        linkUrl: 'https://m.me/j/AbaMNoJ9PCDic06Q/',
       ),
       ListItemSpec(
-        id: 'vimeo',
-        title: 'Vimeo',
-        linkUrl: 'https://vimeo.com/user207149725',
-      ),
-      ListItemSpec(
-        id: 'whatsApp',
-        title: 'WhatsApp',
-        linkUrl: 'https://chat.whatsapp.com/BU5a765wYp4KurToTJRAEQ',
-      ),
-      ListItemSpec(
-        id: 'signal',
-        title: 'Signal',
+        id: 'signal_general',
+        title: 'Signal Group',
         linkUrl:
-            'https://signal.group/#CjQKINxZt4H7Y4dtc-70mgM3d0FiJpBoxhEfSLO1VBZusmy6EhBsqagsMDqhZRG-F4eP7kq5',
+            'https://signal.group/#CjQKIPgMaaANNVgvQUt8-xI18YEEv6pE4ujmetJdg3bMSF3UEhBt6YvplgLoGsf7PFlhib2a',
       ),
       ListItemSpec(
-        id: 'telegram',
-        title: 'Telegram',
-        linkUrl: 'https://t.me/+73ilYbPKq49iZTJh',
+        id: 'whatsapp_general',
+        title: 'WhatsApp Community',
+        linkUrl: 'https://chat.whatsapp.com/IOAC7SZJJDBFhAClknfExI?mode=wwt',
       ),
       ListItemSpec(
-        id: 'instagram',
-        title: 'Facebook',
-        linkUrl: 'https://m.me/j/Abbsm8gFA5wGKkDd/',
-      )
-      // Add more channels if you like
+        id: 'telegram_general',
+        title: 'Telegram Channel',
+        linkUrl: 'https://t.me/+dEBzfVj-tNVjYWQx',
+      ),
     ],
   ),
   'products': ItemListConfig(
@@ -545,7 +658,7 @@ final Map<String, ItemListConfig> listCatalog = {
         id: 'harm_free_emporium',
         title: 'Harm Free Emporium',
         linkUrl:
-            'https://www.regenerationglobal.net/harmFreeEmporium.html', // TODO: replace later
+            'https://regenerationglobal.net/harmFreeEmporium.html', // TODO: replace later
       ),
       ListItemSpec(
         id: 'health',
